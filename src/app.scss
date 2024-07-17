@@ -1,0 +1,57 @@
+@font-face {
+    font-family: 'Open Sans Variable';
+    font-style: normal;
+    font-display: swap;
+    font-weight: 300 800;
+    font-stretch: 75% 100%;
+    src: url(@fontsource-variable/open-sans/files/open-sans-latin-wght-normal.woff2) format('woff2-variations');
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+:root {
+    --color-background: color(display-p3 .05 .05 .05 / 1);
+    --color-text: color(display-p3 1 1 1 / 1);
+    --color-accent:  color(display-p3 1 0.523 0 / 1);
+    --color-accent-bg: color-mix(in display-p3, var(--color-accent) 15%, var(--color-background));
+    --color-border: color-mix(in display-p3, var(--color-text) 15%, var(--color-background));
+
+    --padding-box: 20px;
+    --radius: 20px;
+}
+
+body.light {
+    --color-text: color(display-p3 .05 .05 .05 / 1);
+    --color-background: color(display-p3 1 1 1 / 1);
+    --color-accent:  color(display-p3 1 0.523 0 / 1);
+    --color-accent-bg: color-mix(in display-p3, var(--color-accent) 15%, var(--color-background));
+    --color-border: color-mix(in display-p3, var(--color-text) 15%, var(--color-background));
+
+    --padding-box: 20px;
+    --radius: 20px;
+}
+
+* {
+    box-sizing: border-box;
+    transition: color .25s, background-color .25s, border-color .25s;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans Variable', sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+}
+
+h1, h2, h3 {
+    &:first-child {
+        margin-top: 0;
+    }
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+a {
+    text-decoration: underline dotted currentColor;
+}

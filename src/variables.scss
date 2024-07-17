@@ -1,0 +1,23 @@
+@mixin box {
+    --box-color-final: var(--box-color, var(--color-text));
+    --box-border: color-mix(in display-p3, var(--box-color-final) 15%, var(--color-background));
+
+    padding: 20px;
+    border: 2px solid var(--box-border);
+    color: var(--box-color-final);
+    border-radius: var(--radius);
+
+    text-decoration: none;
+}
+
+@mixin gaps {
+    gap: 20px;
+}
+
+@mixin button {
+    border: 1px solid currentColor;
+    background-color: color-mix(in display-p3, currentColor 15%, transparent);
+    color: inherit;
+    padding: 5px;
+    border-radius: var(--radius);
+}
