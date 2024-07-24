@@ -10,10 +10,13 @@
 
 :root {
     --color-background: color(display-p3 .05 .05 .05 / 1);
+    --color-background-transparent: color-mix(in display-p3, var(--color-background) 75%, transparent);
     --color-text: color(display-p3 1 1 1 / 1);
     --color-accent:  color(display-p3 1 0.523 0 / 1);
     --color-accent-bg: color-mix(in display-p3, var(--color-accent) 15%, var(--color-background));
     --color-border: color-mix(in display-p3, var(--color-text) 15%, var(--color-background));
+    --color-border-slight: color-mix(in display-p3, var(--color-text) 7%, var(--color-background));
+    --color-background-alternate: color-mix(in display-p3, var(--color-text) 5%, var(--color-background));
 
     --padding-box: 20px;
     --radius: 20px;
@@ -25,6 +28,8 @@ body.light {
     --color-accent:  color(display-p3 1 0.523 0 / 1);
     --color-accent-bg: color-mix(in display-p3, var(--color-accent) 15%, var(--color-background));
     --color-border: color-mix(in display-p3, var(--color-text) 15%, var(--color-background));
+    --color-border-slight: color-mix(in display-p3, var(--color-text) 7%, var(--color-background));
+    --color-background-alternate: color-mix(in display-p3, var(--color-text) 5%, var(--color-background));
 
     --padding-box: 20px;
     --radius: 20px;
@@ -32,7 +37,7 @@ body.light {
 
 * {
     box-sizing: border-box;
-    transition: color .25s, background-color .25s, border-color .25s;
+    transition: color .25s, background-color .25s, border-color .25s, opacity .25s;
 }
 
 html, body {

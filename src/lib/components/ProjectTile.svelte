@@ -1,12 +1,15 @@
 <script lang="ts">
+	import type { Project } from "$lib/types";
 	import { ChevronRight, ClipboardList, Timer } from "lucide-svelte";
+	import ShimmerWrapper from "./ShimmerWrapper.svelte";
 
+    export let project: Project;
 </script>
 
-<a href="/projects/1" class="project">
-    <span class="name">My Project</span>
+<a href="/projects/{project.id}" class="project">
+    <span class="name">{project.name}</span>
     <div class="facts">
-        <ClipboardList /> <span>23</span>
+        <ClipboardList /> <span><ShimmerWrapper>23</ShimmerWrapper></span>
     </div>
     <span class="cta">Projekt öffnen <ChevronRight/></span>
 </a>

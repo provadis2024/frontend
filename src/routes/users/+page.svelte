@@ -1,50 +1,52 @@
 <script lang="ts">
-	import ProjectForm from "$lib/components/ProjectForm.svelte";
-	import ProjectTile from "$lib/components/ProjectTile.svelte";
-	import type { Project } from "$lib/types";
-	import { Plus } from "lucide-svelte";
+	import UserForm from "$lib/components/UserForm.svelte";
+	import type { User } from "$lib/types";
+	import { Plus, User as UserIcon } from "lucide-svelte";
 
     let editorActive = false;
-    let editor: ProjectForm;
+    let editor: UserForm;
 
     let dummy = Array.from({length: 12}).map((x, idx) => {
-        const project: Project = {
+        const user: User = {
             id: idx.toString(),
-            name: 'Demo Project',
-            description: 'Test',
-            members: [],
-            owner: '1'
+            username: 'max.muster'
         }
 
-        return project
+        return user
     });
 </script>
 
 <div class="projects">
     <div class="box">
-        <h1>Projekte</h1>
+        <h1>Benutzer</h1>
     </div>
 
     <div class="overlay" class:active={editorActive}>
         <div class="container">
-            <ProjectForm on:cancel={() => editorActive = false} bind:this={editor} />
+            <UserForm on:cancel={() => editorActive = false} bind:this={editor} />
         </div>
     </div>
     
     <div class="box long">
-        <div class="controls">12 Projekte</div>
+        <div class="controls">{dummy.length} Benutzer</div>
         
         <div class="list">
             <button class="add-btn" on:click={() => {
-                editor.loadProject({});
+                editor.loadUser({});
                 editorActive = true;
             }}>
                 <Plus/>
-                <span>Neues Projekt</span>
+                <span>Neuer Benutzer</span>
             </button>
 
-            {#each dummy as project}
-                <ProjectTile {project} />
+            {#each dummy as user}
+                <button on:click={() => {
+                    editor.loadUser(user);
+                    editorActive = true;
+                }} class="user" id="user-{user.id}">
+                    <UserIcon />
+                    <span>{user.username}</span>
+                </button>
             {/each}
         </div>
     </div>
@@ -103,6 +105,25 @@
                 justify-content: center;
                 gap: 10px;
                 
+            }
+
+            .user {
+                align-self: stretch;
+                width: 200px;
+                @include button;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                background-color: transparent;
+                border-color: var(--color-border);
+                border-width: 2px;
+
+                &:target {
+                    color: var(--color-accent);
+                    border-color: var(--color-accent);
+                }
             }
             
         }
