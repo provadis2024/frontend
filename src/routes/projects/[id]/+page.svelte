@@ -109,17 +109,19 @@
 		<h2>Aufgaben</h2>
 
 		<div class="scrollable-list">
-			<button
-				on:click={() => {
-					taskEditor.loadTask({
-						project_id: project.project_id || 0
-					});
-					taskEditorActive = true;
-				}}
-			>
-				<Plus />
-				<span class="name">Neue Aufgabe</span>
-			</button>
+			<RoleGate required="project_manager">
+				<button
+					on:click={() => {
+						taskEditor.loadTask({
+							project_id: project.project_id || 0
+						});
+						taskEditorActive = true;
+					}}
+				>
+					<Plus />
+					<span class="name">Neue Aufgabe</span>
+				</button>
+			</RoleGate>
 			<Loader loading={tasksLoading} display="overlay" />
 			{#each tasks as task}
 				<button
