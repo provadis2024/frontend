@@ -8,11 +8,14 @@
 		ClipboardList,
 		CalendarClock,
 		Moon,
-		LogIn
+		LogIn,
+		LogOut,
+		Lightbulb
 	} from 'lucide-svelte';
 	import { page } from '$app/stores';
 	import Loader from '$lib/components/Loader.svelte';
 	import type { PageData } from './$types';
+	import backend, { manager } from '$lib/backend';
 
 	let sidebarExtended = true;
 
@@ -20,7 +23,7 @@
 </script>
 
 <div class="layout">
-	<Loader display="overlay" loading={data.self == null} />
+	<Loader display="overlay" loading={data.self === undefined} />
 
 	<nav class="sidebar" class:extended={sidebarExtended}>
 		<a href="/" class="logo">
@@ -51,6 +54,12 @@
 				<Users />
 				{#if sidebarExtended}<span>Benutzer</span>{/if}
 			</a>
+			{#if $manager}
+				<a href="/insights" class:active={$page.url.pathname.startsWith('/insights')}>
+					<Lightbulb />
+					{#if sidebarExtended}<span>Analysen</span>{/if}
+				</a>
+			{/if}
 		{:else}
 			<a href="/signin" class:active={$page.url.pathname == '/signin'}>
 				<LogIn />
@@ -60,6 +69,9 @@
 
 		<button class="night-button" on:click={() => document.body.classList.toggle('light')}>
 			<Moon />
+		</button>
+		<button class="signout-button" on:click={() => backend.signout()}>
+			<LogOut />
 		</button>
 		<button class="extend-button" on:click={() => (sidebarExtended = !sidebarExtended)}>
 			{#if sidebarExtended}

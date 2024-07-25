@@ -1,4 +1,5 @@
 import type { DateTime } from 'luxon';
+import type { UserRole } from './backend';
 
 export type Booking = {
 	time_entry_id?: string | null;
@@ -20,7 +21,7 @@ export type User = {
 	user_id?: string | null;
 	username: string;
 	password?: string;
-	role?: string;
+	user_role?: UserRole;
 };
 
 export type Task = {

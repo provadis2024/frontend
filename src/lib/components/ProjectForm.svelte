@@ -1,26 +1,34 @@
 <script lang="ts">
-	import type { Booking, Project } from '$lib/types';
+	import backend from '$lib/backend';
+	import type { Project } from '$lib/types';
 	import { X } from 'lucide-svelte';
 	import { createEventDispatcher } from 'svelte';
+	import Loader from './Loader.svelte';
 
 	const emitter = createEventDispatcher<{
 		cancel: undefined;
-		submit: Project;
+		submit: Project & { user_ids: number[] };
 	}>();
 
-	let project: Partial<Project> = {};
+	let project: Partial<Project & { user_ids: number[] }> = {
+		user_ids: []
+	};
 
-	export const loadProject = (newProject: Partial<Project>) => {
+	export const loadProject = (newProject: Partial<Project & { user_ids: number[] }>) => {
+		if (!newProject.user_ids) {
+			newProject.user_ids = [];
+		}
+
 		project = newProject;
 	};
 
 	const submit = () => {
-		if (!null) {
+		/*if (!null) {
 			alert('Aufgabe benötigt.');
 			return;
-		}
+		}*/
 
-		emitter('submit', project as Project);
+		emitter('submit', project as Project & { user_ids: number[] });
 	};
 </script>
 
@@ -55,10 +63,27 @@
 		<textarea id="description" bind:value={project.description} />
 	</div>
 
-	<div class="group">
-		<label for="owner">Projektleiter</label>
-		<input id="owner" type="text" bind:value={project.owner_id} />
-	</div>
+	{#await backend.getUsers()}
+		<Loader />
+	{:then users}
+		<div class="group">
+			<label for="owner">Projektleiter</label>
+			<select id="owner" bind:value={project.owner_id}>
+				{#each users as user}
+					<option value={user.user_id}>{user.username}</option>
+				{/each}
+			</select>
+		</div>
+
+		<div class="group">
+			<label for="users">Mitarbeiter</label>
+			<select id="users" multiple bind:value={project.user_ids}>
+				{#each users as user}
+					<option value={user.user_id}>{user.username}</option>
+				{/each}
+			</select>
+		</div>
+	{/await}
 
 	<button>Speichern</button>
 </form>

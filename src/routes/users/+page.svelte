@@ -31,7 +31,21 @@
 
 	<div class="overlay" class:active={editorActive}>
 		<div class="container">
-			<UserForm on:cancel={() => (editorActive = false)} bind:this={editor} />
+			<UserForm
+				on:cancel={() => (editorActive = false)}
+				bind:this={editor}
+				on:submit={async (ev) => {
+					loading = true;
+					const response = await backend.persistUser(ev.detail);
+
+					if (typeof response === 'string') {
+						alert(response);
+					}
+
+					editorActive = false;
+					load();
+				}}
+			/>
 		</div>
 	</div>
 

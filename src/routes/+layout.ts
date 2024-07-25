@@ -1,11 +1,11 @@
 import { Settings } from 'luxon';
 import type { LayoutLoad } from './$types';
-import backend from '$lib/backend';
+import backend, { type GetSelfResponse } from '$lib/backend';
 import { browser } from '$app/environment';
 import { goto } from '$app/navigation';
 
 export const load = (async ({ route }) => {
-	let self = null;
+	let self: GetSelfResponse | null | undefined = undefined;
 
 	if (browser) {
 		self = await backend.getSelf();

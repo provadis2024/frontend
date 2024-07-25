@@ -122,6 +122,7 @@
 	<div class="group">
 		<label for="project">Projekt</label>
 		<select id="project" bind:value={booking.project_id}>
+			<option disabled selected value>Bitte auswählen...</option>
 			{#each projects || [] as project}
 				<option value={project.project_id}>{project.name}</option>
 			{/each}
@@ -130,6 +131,7 @@
 	<div class="group">
 		<label for="task">Aufgabe</label>
 		<select id="task" bind:value={booking.task_id}>
+			<option disabled selected value>Bitte auswählen...</option>
 			{#each tasks || [] as task}
 				<option value={task.task_id}>{task.name}</option>
 			{/each}

@@ -59,12 +59,13 @@ export type GetSelfResponse = {
 
 let getSelfCache: GetSelfResponse | null = null;
 
-const signout = () => {
+const signout = (skipReload = false) => {
 	localStorage.removeItem('token');
 	getSelfCache = null;
 	role.set('unauthenticated');
 	manager.set(false);
 	admin.set(false);
+	if (!skipReload) location.reload();
 };
 
 const getSelf = async () => {
@@ -75,7 +76,7 @@ const getSelf = async () => {
 	});
 
 	if (!response.ok) {
-		signout();
+		signout(true);
 
 		return null;
 	}
@@ -109,7 +110,23 @@ const getProject = async (id: number) => {
 	};
 };
 
-const persistProject = (project: Project) => {};
+const persistProject = async (project: Project & { user_ids: number[] }) => {
+	const response = await fetch(makeUrl('/projects'), {
+		method: project.project_id ? 'PUT' : 'POST',
+		headers: makeHeaders({
+			'Content-Type': 'application/json'
+		}),
+		body: JSON.stringify(project)
+	});
+
+	if (!response.ok) {
+		const data = await response.json();
+
+		return data.message as string;
+	}
+
+	return response.ok;
+};
 
 type TasksResponse = Task[];
 
@@ -133,7 +150,25 @@ const getTask = async (taskId: number) => {
 	});
 };
 
-const persistTask = (task: Task) => {};
+const persistTask = async (task: Task) => {
+	if (task.task_id) return 'Aufgabe kann nicht aktualisiert werden.';
+
+	const response = await fetch(makeUrl('/tasks'), {
+		method: 'POST',
+		headers: makeHeaders({
+			'Content-Type': 'application/json'
+		}),
+		body: JSON.stringify(task)
+	});
+
+	if (!response.ok) {
+		const data = await response.json();
+
+		return data.message as string;
+	}
+
+	return response.ok;
+};
 
 type BookingResponse = {
 	time_entry_id?: string | null;
@@ -165,7 +200,7 @@ const getBookings = async () => {
 
 const persistBooking = async (booking: Booking) => {
 	const response = await fetch(makeUrl('/booking'), {
-		method: 'POST',
+		method: booking.time_entry_id ? 'PUT' : 'POST',
 		headers: makeHeaders({
 			'Content-Type': 'application/json'
 		}),
@@ -207,14 +242,80 @@ const getUser = async (user_id: number) => {
 	};
 };
 
-const persistUser = (user: User) => {};
+const persistUser = async (user: User) => {
+	const response = await fetch(makeUrl('/users'), {
+		method: user.user_id ? 'PUT' : 'POST',
+		headers: makeHeaders({
+			'Content-Type': 'application/json'
+		}),
+		body: JSON.stringify(user)
+	});
 
-const isAdmin = (user: User): boolean => {
-	return user.role == 'ADMIN';
+	if (!response.ok) {
+		const data = await response.json();
+
+		return data.message as string;
+	}
+
+	return response.ok;
 };
 
-const isProjectManager = (user: User): boolean => {
-	return user.role == 'PROJECT_MANAGER' || user.role == 'ADMIN';
+export type UserWorkHoursResponse = {
+	end_date: string;
+	start_date: string;
+	work_hours: {
+		total_hours_worked: number;
+		user_id: number;
+	}[];
+};
+
+const getUserWorkHours = async () => {
+	const response = await fetch(makeUrl('/user_work_hours'), {
+		headers: makeHeaders({})
+	});
+
+	return (await response.json()) as UserWorkHoursResponse;
+};
+
+export type ProjectWorkHoursResponse = {
+	end_date: string;
+	start_date: string;
+	work_hours: {
+		total_hours_worked_on_project: number;
+		project_id: number;
+	}[];
+};
+
+const getProjectWorkHours = async () => {
+	const response = await fetch(makeUrl('/project_work_hours'), {
+		headers: makeHeaders({})
+	});
+
+	return (await response.json()) as ProjectWorkHoursResponse;
+};
+
+export type TaskWorkHoursResponse = {
+	date_range: {
+		end_date: string;
+		start_date: string;
+	};
+	projects: {
+		project_name: string;
+		project_id: number;
+		tasks: {
+			task_id: number;
+			task_name: string;
+			time_spent: number;
+		}[];
+	}[];
+};
+
+const getTaskWorkHours = async () => {
+	const response = await fetch(makeUrl('/task_work_hours'), {
+		headers: makeHeaders({})
+	});
+
+	return (await response.json()) as TaskWorkHoursResponse;
 };
 
 const backend = {
@@ -228,7 +329,13 @@ const backend = {
 	getSelf,
 	getBookings,
 	persistBooking,
-	signout
+	persistProject,
+	persistTask,
+	persistUser,
+	signout,
+	getUserWorkHours,
+	getProjectWorkHours,
+	getTaskWorkHours
 };
 
 export default backend;

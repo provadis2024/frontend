@@ -19,10 +19,10 @@
 	};
 
 	const submit = () => {
-		if (!null) {
+		/*if (!null) {
 			alert('Aufgabe benötigt.');
 			return;
-		}
+		}*/
 
 		emitter('submit', task as Task);
 	};

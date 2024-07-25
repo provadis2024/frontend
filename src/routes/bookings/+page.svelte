@@ -142,24 +142,17 @@
 						bookingActive = false;
 						cancelAllSelections();
 					}}
-					on:submit={(ev) => {
+					on:submit={async (ev) => {
 						loading = true;
-						backend
-							.persistBooking(ev.detail)
-							.then((response) => {
-								if (typeof response === 'string') {
-									alert(response);
-								}
+						const response = await backend.persistBooking(ev.detail);
 
-								bookingActive = false;
-								cancelAllSelections();
-								load();
-							})
-							.catch(() => {
-								bookingActive = false;
-								cancelAllSelections();
-								load();
-							});
+						if (typeof response === 'string') {
+							alert(response);
+						}
+
+						bookingActive = false;
+						cancelAllSelections();
+						load();
 					}}
 					bind:this={form}
 				/>

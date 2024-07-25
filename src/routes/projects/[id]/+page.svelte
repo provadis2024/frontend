@@ -58,13 +58,40 @@
 
 	<div class="overlay" class:active={editorActive}>
 		<div class="container">
-			<ProjectForm on:cancel={() => (editorActive = false)} bind:this={editor} />
+			<ProjectForm
+				on:cancel={() => (editorActive = false)}
+				bind:this={editor}
+				on:submit={async (ev) => {
+					const response = await backend.persistProject(ev.detail);
+
+					if (typeof response === 'string') {
+						alert(response);
+					}
+
+					editorActive = false;
+					load();
+				}}
+			/>
 		</div>
 	</div>
 
 	<div class="overlay" class:active={taskEditorActive}>
 		<div class="container">
-			<TaskForm on:cancel={() => (taskEditorActive = false)} bind:this={taskEditor} />
+			<TaskForm
+				on:cancel={() => (taskEditorActive = false)}
+				bind:this={taskEditor}
+				on:submit={async (ev) => {
+					tasksLoading = true;
+					const response = await backend.persistTask(ev.detail);
+
+					if (typeof response === 'string') {
+						alert(response);
+					}
+
+					taskEditorActive = false;
+					load();
+				}}
+			/>
 		</div>
 	</div>
 

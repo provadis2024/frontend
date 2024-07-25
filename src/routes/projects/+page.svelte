@@ -32,7 +32,21 @@
 
 	<div class="overlay" class:active={editorActive}>
 		<div class="container">
-			<ProjectForm on:cancel={() => (editorActive = false)} bind:this={editor} />
+			<ProjectForm
+				on:cancel={() => (editorActive = false)}
+				bind:this={editor}
+				on:submit={async (ev) => {
+					loading = true;
+					const response = await backend.persistProject(ev.detail);
+
+					if (typeof response === 'string') {
+						alert(response);
+					}
+
+					editorActive = false;
+					load();
+				}}
+			/>
 		</div>
 	</div>
 

@@ -5,9 +5,9 @@ import backend from '$lib/backend';
 
 export const load = (async () => {
 	if (browser) {
-		if ((await backend.getSelf()) !== null) {
+		/*if ((await backend.getSelf()) !== null) {
 			throw redirect(302, '/');
-		}
+		}*/
 	}
 
 	return {};

@@ -16,8 +16,12 @@
 	};
 
 	const submit = () => {
-		if (!null) {
-			alert('Aufgabe benötigt.');
+		if (!user.password) {
+			alert('Passwort benötigt.');
+			return;
+		}
+		if (!user.username) {
+			alert('Benutzername benötigt.');
 			return;
 		}
 
@@ -49,6 +53,15 @@
 	<div class="group">
 		<label for="name">Benutzername</label>
 		<input id="name" type="text" bind:value={user.username} readonly={!$admin} />
+	</div>
+
+	<div class="group">
+		<label for="role">Berechtigungen</label>
+		<select id="role" bind:value={user.user_role} disabled={!$admin}>
+			<option value="employee">Mitarbeiter</option>
+			<option value="project_manager">Projektmanager</option>
+			<option value="admin">Administrator</option>
+		</select>
 	</div>
 
 	{#if $admin}

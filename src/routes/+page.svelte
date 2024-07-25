@@ -1,13 +1,20 @@
 <script lang="ts">
 	import { ChevronRight, OctagonAlert, Play, Timer } from 'lucide-svelte';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 </script>
 
 <div class="dashboard">
 	<div class="greeting">
-		<span>Guten Morgen, <em>Max</em>!</span>
+		{#if data.self === undefined}
+			<span>Guten Tag!</span>
+		{:else}
+			<span>Guten Tag, <em>{data.self?.message}</em>!</span>
+		{/if}
 	</div>
 
-	<div class="timer">
+	<!--<div class="timer">
 		<div class="timer-main">
 			<Timer />
 
@@ -36,7 +43,7 @@
 		<h2>Kürzliche Projekte</h2>
 
 		<a href="/projects" class="view-all">Alle Projekte anzeigen <ChevronRight /></a>
-	</div>
+	</div>-->
 </div>
 
 <style lang="scss">
