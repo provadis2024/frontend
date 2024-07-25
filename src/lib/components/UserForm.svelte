@@ -1,68 +1,75 @@
 <script lang="ts">
-	import type { User } from "$lib/types";
-	import { X } from "lucide-svelte";
-	import { createEventDispatcher } from "svelte";
+	import { admin } from '$lib/backend';
+	import type { User } from '$lib/types';
+	import { X } from 'lucide-svelte';
+	import { createEventDispatcher } from 'svelte';
 
-    const emitter = createEventDispatcher<{
-        "cancel": undefined,
-        "submit": User
-    }>();
+	const emitter = createEventDispatcher<{
+		cancel: undefined;
+		submit: User;
+	}>();
 
-    let user: Partial<User> = {};
+	let user: Partial<User> = {};
 
-    
+	export const loadUser = (newUser: Partial<User>) => {
+		user = newUser;
+	};
 
-    export const loadUser = (newUser: Partial<User>) => {
-        user = newUser
-    }
+	const submit = () => {
+		if (!null) {
+			alert('Aufgabe benötigt.');
+			return;
+		}
 
-    const submit = () => {
-        if(!null) {
-            alert("Aufgabe benötigt.");
-            return;
-        }
-
-        emitter("submit", user as User);
-    }
+		emitter('submit', user as User);
+	};
 </script>
-<form class="user-form" on:submit={(ev) => {
-    submit();
-    ev.preventDefault();
-}}>
-    {#if user.id}
-        <h2>Benutzer bearbeiten</h2>
-    {:else}
-        <h2>Neuer Benutzer</h2>
-    {/if}
 
-    <button class="close" on:click={(ev) => {
-        emitter("cancel");
-        ev.preventDefault();
-    }}><X/></button>
+<form
+	class="user-form"
+	on:submit={(ev) => {
+		submit();
+		ev.preventDefault();
+	}}
+>
+	{#if user.user_id}
+		<h2>Benutzer bearbeiten</h2>
+	{:else}
+		<h2>Neuer Benutzer</h2>
+	{/if}
 
-    <div class="group">
-        <label for="name">Benutzername</label>
-        <input id="name" type="text" bind:value={user.username} />
-    </div>
+	<button
+		class="close"
+		on:click={(ev) => {
+			emitter('cancel');
+			ev.preventDefault();
+		}}><X /></button
+	>
 
-    <div class="group">
-        <label for="password">Passwort</label>
-        <input id="password" type="password" bind:value={user.password} />
-    </div>
-    
+	<div class="group">
+		<label for="name">Benutzername</label>
+		<input id="name" type="text" bind:value={user.username} readonly={!$admin} />
+	</div>
 
-    <button>Speichern</button>
+	{#if $admin}
+		<div class="group">
+			<label for="password">Passwort</label>
+			<input id="password" type="password" bind:value={user.password} />
+		</div>
+
+		<button>Speichern</button>
+	{/if}
 </form>
 
 <style lang="scss">
-    .user-form {
-        @include box;
-        background-color: var(--color-background);
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        contain: layout;
+	.user-form {
+		@include box;
+		background-color: var(--color-background);
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		contain: layout;
 
-        @include formStyles;
-    }
+		@include formStyles;
+	}
 </style>

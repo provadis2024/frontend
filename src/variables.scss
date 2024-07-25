@@ -1,82 +1,85 @@
 @mixin box {
-    --box-color-final: var(--box-color, var(--color-text));
-    --box-border: color-mix(in display-p3, var(--box-color-final) 15%, var(--color-background));
+	--box-color-final: var(--box-color, var(--color-text));
+	--box-border: color-mix(in display-p3, var(--box-color-final) 15%, var(--color-background));
 
-    padding: 20px;
-    border: 2px solid var(--box-border);
-    color: var(--box-color-final);
-    border-radius: var(--radius);
+	padding: 20px;
+	border: 2px solid var(--box-border);
+	color: var(--box-color-final);
+	border-radius: var(--radius);
 
-    text-decoration: none;
+	text-decoration: none;
+	contain: paint;
 }
 
 @mixin gaps {
-    gap: 20px;
+	gap: 20px;
 }
 
 @mixin button {
-    border: 1px solid currentColor;
-    background-color: color-mix(in display-p3, currentColor 15%, transparent);
-    color: inherit;
-    padding: 5px;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font: inherit;
+	border: 1px solid currentColor;
+	background-color: color-mix(in display-p3, currentColor 15%, transparent);
+	color: inherit;
+	padding: 5px;
+	border-radius: var(--radius);
+	cursor: pointer;
+	font: inherit;
 }
 
 @mixin formStyles {
-    .combo {
-        display: flex;
+	.combo {
+		display: flex;
 
-        > * {
-            flex-grow: 1;
-            width: 0;
+		> * {
+			flex-grow: 1;
+			width: 0;
 
-            &:not(:first-child) {
-                input {
-                    border-top-left-radius: 0;
-                    border-bottom-left-radius: 0;
-                    border-left: none;
-                }
-            }
+			&:not(:first-child) {
+				input {
+					border-top-left-radius: 0;
+					border-bottom-left-radius: 0;
+					border-left: none;
+				}
+			}
 
-            &:not(:last-child) {
-                input {
-                    border-top-right-radius: 0;
-                    border-bottom-right-radius: 0;
-                }
-            }
-        }
-    }
+			&:not(:last-child) {
+				input {
+					border-top-right-radius: 0;
+					border-bottom-right-radius: 0;
+				}
+			}
+		}
+	}
 
-    .group {
-        display: flex;
-        flex-direction: column;
-    }
+	.group {
+		display: flex;
+		flex-direction: column;
+	}
 
-    input, select, textarea {
-        @include box;
-        background-color: transparent;
-        padding: 10px 20px;
-    }
+	input,
+	select,
+	textarea {
+		@include box;
+		background-color: transparent;
+		padding: 10px 20px;
+	}
 
-    textarea {
-        resize: vertical;
-    }
+	textarea {
+		resize: vertical;
+	}
 
-    button {
-        @include box;
-        background-color: transparent;
-        --box-color: var(--color-accent);
-        padding: 10px 20px;
-        cursor: pointer;
+	button {
+		@include box;
+		background-color: transparent;
+		--box-color: var(--color-accent);
+		padding: 10px 20px;
+		cursor: pointer;
 
-        &.close {
-            border: none;
-            position: absolute;
-            top: 0;
-            right: 0;
-            padding: 20px;
-        }
-    }
+		&.close {
+			border: none;
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding: 20px;
+		}
+	}
 }
