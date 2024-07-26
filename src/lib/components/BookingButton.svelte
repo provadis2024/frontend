@@ -34,6 +34,7 @@
 		emitter('edit', booking);
 		ev.preventDefault();
 	}}
+	title="{project?.name} - {task?.name}"
 >
 	<span class="project">
 		<ShimmerWrapper loading={project == null}>{project?.name}</ShimmerWrapper>
@@ -59,6 +60,7 @@
 		cursor: pointer;
 		display: flex;
 		flex-direction: column;
+		overflow: hidden;
 
 		.project {
 			font-weight: 800;
