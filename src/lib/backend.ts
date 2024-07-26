@@ -186,6 +186,9 @@ const getBookings = async () => {
 
 	const responseData = (await response.json()) as BookingResponse;
 
+	if("message" in responseData && responseData.message == "No time entries available") 
+		return [];
+
 	return responseData.map((rawBooking): Booking => {
 		return {
 			time_entry_id: rawBooking.time_entry_id,
