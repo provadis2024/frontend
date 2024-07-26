@@ -154,9 +154,9 @@
 		</div>
 	</div>
 
-	<div class="box analyze">
+	<!--<div class="box analyze">
 		<h2>Analysen</h2>
-	</div>
+	</div>-->
 </div>
 
 <style lang="scss">
@@ -168,13 +168,13 @@
 		grid-template-areas:
 			'header header'
 			'tasks   team'
-			'analyze team';
+			'tasks team';
 		grid-template-rows: min-content 1fr 1fr;
 		grid-template-columns: repeat(2, 1fr);
 		contain: layout;
 
 		@container layout (width < 1000px) {
-			grid-template-areas: 'header' 'tasks' 'team' 'analyze';
+			grid-template-areas: 'header' 'tasks' 'team';
 			grid-template-rows: repeat(4, min-content);
 			grid-template-columns: 1fr;
 		}
