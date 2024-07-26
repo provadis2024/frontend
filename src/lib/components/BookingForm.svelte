@@ -78,6 +78,10 @@
 	const loadTasks = async (projectId: number) => {
 		//tasks = null;
 		tasks = await backend.getTasks(projectId);
+
+		if (!booking.task_id) {
+			booking.task_id = tasks.length > 0 ? tasks[0].task_id : 0;
+		}
 	};
 
 	onMount(load);
